@@ -327,6 +327,7 @@ DEPENDENCIES
   debug
   jbuilder
   jsbundling-rails
+  nokogiri
   pg (~> 1.1)
   propshaft
   pry
