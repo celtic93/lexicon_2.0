@@ -1,0 +1,19 @@
+<h1>Words creation</h1>
+
+<% if flash[:words_messages]&.any? %>
+  <% flash[:words_messages].each do |message| %>
+    <div class="<%= message["status"] %>">
+      <%= message["text"] %>
+    </div>
+  <% end %>
+<% end %>
+
+<br>
+<br>
+<%= form_for :words, url: words_path do |form| %>
+  <div>
+    <%= form.text_area :words_texts, cols: 120, rows: 20, placeholder: "Type each word from new line" %>
+  </div>
+
+  <%= form.submit "Save" %>
+<% end  %>
