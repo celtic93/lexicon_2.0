@@ -1,19 +1,24 @@
 require "open-uri"
 
-class Definition::Parser
+class Meaning::Parser
+  BASE_URL = "https://dictionary.cambridge.org".freeze
   DICTIONARY_URL = "https://dictionary.cambridge.org/dictionary/english-russian/".freeze
 
-  attr_accessor :word, :result
+  attr_accessor :meanings_array, :word, :result
 
-  def initialize(word_id:)
+  def initialize(word:)
     @result = Result.new
-    @word = Word.find(word_id)
+    @word = word
+    @meanings_array = []
   end
 
-  def parse_definitions
+  def parse_meanings
     parse_word_page
+    add_meanings_array_to_word
+    create_meanings
 
-    # result
+    result.meanings_count = meanings_array.count
+    result
   end
 
   private
@@ -23,11 +28,9 @@ class Definition::Parser
     html = URI.open(DICTIONARY_URL + url_page).read
     doc = Nokogiri::HTML(html)
 
-    definitions_array = []
-
     # 1. Ищем все определения на странице
     doc.css(".def").each do |def_tag|
-      definition_text = def_tag.text.strip
+      meaning_text = def_tag.text.strip
 
       # Находим родительский блок .dsense
       sense_block = def_tag.ancestors.find { |node| node["class"]&.include?("dsense") }
@@ -51,19 +54,18 @@ class Definition::Parser
 
       # 4. Извлекаем Аудио и формируем полную ссылку
       audio_url = nil
-      base_url = "https://dictionary.cambridge.org"
 
       if pos_container
         audio_node = pos_container.at_css(".uk .daud source")
         if audio_node
           relative_url = audio_node["src"] || audio_node["data-src-mp3"]
-          audio_url = relative_url&.start_with?("/") ? "#{base_url}#{relative_url}" : relative_url
+          audio_url = relative_url&.start_with?("/") ? "#{BASE_URL}#{relative_url}" : relative_url
         else
           # Фолбэк на глобальное аудио
           audio_node = doc.at_css(".uk .daud source")
           if audio_node
             relative_url = audio_node["src"] || audio_node["data-src-mp3"]
-            audio_url = relative_url&.start_with?("/") ? "#{base_url}#{relative_url}" : relative_url
+            audio_url = relative_url&.start_with?("/") ? "#{BASE_URL}#{relative_url}" : relative_url
           end
         end
       end
@@ -107,9 +109,9 @@ class Definition::Parser
         level = level_node&.text&.strip
       end
 
-      definitions_array << {
+      meanings_array << {
         text: word_text.downcase,
-        definition: definition_text,
+        meaning: meaning_text,
         translation: translation,
         audio_url: audio_url,
         examples: examples,
@@ -117,15 +119,23 @@ class Definition::Parser
         level: level
       }
     end
+  end
 
-    definitions_array
+  def add_meanings_array_to_word
+    Word.update(parsed_meanings: meanings_array)
+  end
+
+  def create_meanings
+    meanings_array.each do |meaning_hash|
+      Meaning::Creator.new(meaning_hash:, word_id: word.id).create_meaning
+    end
   end
 
   class Result
-    attr_accessor :definitions
+    attr_accessor :meanings_count
 
     def initialize
-      @definitions = []
+      @meanings_count = nil
     end
   end
 end
