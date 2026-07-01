@@ -1,6 +1,14 @@
 class WordsController < ApplicationController
   add_flash_types :words_messages
 
+  def index
+    @words = Word.all
+
+    if params[:meaning_status] == "pending"
+      @words = @words.with_pending_meanings
+    end
+  end
+
   def new; end
 
   def create

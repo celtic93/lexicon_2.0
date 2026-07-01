@@ -1,0 +1,25 @@
+<h1>Words</h1>
+
+<div class="words-filters">
+  <%= link_to "All words", words_path %>
+  |
+  <%= link_to "Words with pending meanings", words_path(meaning_status: "pending") %>
+  |
+  <%= link_to "New word", new_word_path %>
+</div>
+
+<% if @words.any? %>
+  <ul class="words-list">
+    <% @words.each do |word| %>
+      <li class="words-list__item">
+        <strong><%= word.text %></strong>
+
+        <div class="words-list__actions">
+          <%= link_to "Show", word_path(word) %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No words found.</p>
+<% end %>

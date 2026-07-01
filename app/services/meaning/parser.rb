@@ -2,7 +2,8 @@ require "open-uri"
 
 class Meaning::Parser
   BASE_URL = "https://dictionary.cambridge.org".freeze
-  DICTIONARY_URL = "https://dictionary.cambridge.org/dictionary/english-russian/".freeze
+  DEFAULT_MEANING_STATUS = :pending
+  DICTIONARY_URL = "https://dictionary.cambridge.org/dictionary/english/".freeze
 
   attr_accessor :meanings_array, :word, :result
 
@@ -15,7 +16,7 @@ class Meaning::Parser
   def parse_meanings
     parse_word_page
     add_meanings_array_to_word
-    create_meanings
+    insert_meanings_into_database
 
     result.meanings_count = meanings_array.count
     result
@@ -122,12 +123,16 @@ class Meaning::Parser
   end
 
   def add_meanings_array_to_word
-    Word.update(parsed_meanings: meanings_array)
+    word.update(parsed_meanings: meanings_array)
   end
 
-  def create_meanings
+  def insert_meanings_into_database
     meanings_array.each do |meaning_hash|
-      Meaning::Creator.new(meaning_hash:, word_id: word.id).create_meaning
+      word.meanings.create(
+        text: meaning_hash[:text],
+        parsed_meaning: meaning_hash,
+        status: DEFAULT_MEANING_STATUS
+      )
     end
   end
 
