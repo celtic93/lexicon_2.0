@@ -8,4 +8,5 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+@import "flashes";
 @import "words";
