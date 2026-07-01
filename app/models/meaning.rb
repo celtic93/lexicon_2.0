@@ -1,7 +1,7 @@
 class Meaning < ApplicationRecord
   extend Enumerize
 
-  STATUSES = [ :duplicate, :erroneous, :pending, :successful ].freeze
+  STATUSES = %i[ duplicate erroneous pending successful ].freeze
 
   belongs_to :word
 
