@@ -11,6 +11,10 @@ class WordsController < ApplicationController
 
   def new; end
 
+  def show
+    @word = Word.includes(:meanings).find(params[:id])
+  end
+
   def create
     @result = Word::Creator.new(words_params:).create_words
 

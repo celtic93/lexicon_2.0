@@ -23,3 +23,60 @@
     gap: 8px;
     margin-left: 12px;
 }
+
+.word-show__actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.meanings-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.meanings-list__item {
+    margin-bottom: 16px;
+}
+
+.meaning-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.meaning-card--warning {
+    background-color: rgba(255, 80, 80, 0.12);
+    border-color: rgba(255, 80, 80, 0.45);
+}
+
+.meaning-card--success {
+    background-color: rgba(70, 180, 100, 0.12);
+    border-color: rgba(70, 180, 100, 0.45);
+}
+
+.meaning-card__text {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.meaning-card__status {
+    margin-bottom: 12px;
+}
+
+.meaning-card__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.button--primary {
+    font-weight: 600;
+}
+
+.button--secondary {
+    font-weight: 400;
+}

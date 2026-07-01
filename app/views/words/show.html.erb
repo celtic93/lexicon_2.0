@@ -1,0 +1,39 @@
+<h1><%= @word.text %></h1>
+
+<div class="word-show__actions">
+  <%= link_to "Back to words", words_path %>
+</div>
+
+<h2>Meanings</h2>
+
+<% if @word.meanings.any? %>
+  <ul class="meanings-list">
+    <% @word.meanings.each do |meaning| %>
+      <li class="meanings-list__item">
+        <div class="meaning-card <%= meaning_card_status_class(meaning) %>">
+          <p class="meaning-card__text">
+            <%= meaning.text %>
+          </p>
+
+          <p class="meaning-card__status">
+            Status: <strong><%= meaning.status %></strong>
+          </p>
+
+          <div class="meaning-card__actions">
+            <%= button_to "Duplicate",
+                  words_path,
+                  method: :post,
+                  class: "button button--secondary" %>
+
+            <%= button_to "Add to Anki",
+                  words_path,
+                  method: :post,
+                  class: "button button--primary" %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No meanings yet.</p>
+<% end %>

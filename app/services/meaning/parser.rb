@@ -129,7 +129,7 @@ class Meaning::Parser
   def insert_meanings_into_database
     meanings_array.each do |meaning_hash|
       word.meanings.create(
-        text: meaning_hash[:text],
+        text: meaning_hash[:meaning],
         parsed_meaning: meaning_hash,
         status: DEFAULT_MEANING_STATUS
       )
