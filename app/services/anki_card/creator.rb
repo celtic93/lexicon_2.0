@@ -1,7 +1,7 @@
 class AnkiCard::Creator
   ANKI_ACTION = "addNote".freeze
   ANKI_BACK_FIELD = "Back".freeze
-  ANKI_DECK_NAME = "Lexicon".freeze
+  ANKI_DECK_NAME = "Lexicon#{"_dev" if ENV["DB"].nil?}".freeze
   ANKI_MODEL_NAME = "Basic".freeze
   ANKI_URL = "http://localhost:8765/".freeze
 

@@ -13,3 +13,9 @@ lint:
 
 sidekiq:
 	bundle exec sidekiq -C config/sidekiq.yml
+
+anki_s:
+	DB=anki_db bin/rails s
+
+anki_c:
+	DB=anki_db bin/rails c
