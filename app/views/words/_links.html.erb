@@ -1,0 +1,7 @@
+<div class="words-filters">
+  <%= link_to "All words", words_path %>
+  |
+  <%= link_to "Words with pending meanings", words_path(meaning_status: "pending") %>
+  |
+  <%= link_to "New word", new_word_path %>
+</div>

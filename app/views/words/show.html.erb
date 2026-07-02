@@ -1,8 +1,6 @@
 <h1><%= @word.text %></h1>
 
-<div class="word-show__actions">
-  <%= link_to "Back to words", words_path %>
-</div>
+<%= render "links" %>
 
 <ul class="meanings-list">
     <% @word.meanings.each do |meaning| %>
