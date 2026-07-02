@@ -1,6 +1,7 @@
 class AnkiCard::Creator
   ANKI_ACTION = "addNote".freeze
   ANKI_BACK_FIELD = "Back".freeze
+  ANKI_FRONT_FIELD = "Front".freeze
   ANKI_DECK_NAME = "Lexicon#{"_dev" if ENV["DB"].nil?}".freeze
   ANKI_MODEL_NAME = "Basic".freeze
   ANKI_URL = "http://localhost:8765/".freeze
@@ -52,6 +53,18 @@ class AnkiCard::Creator
           url: parsed_meaning["audio_url"],
           filename:,
           fields: [ ANKI_BACK_FIELD ]
+        }
+      ]
+    end
+
+    if parsed_meaning["image_url"].present?
+      filename = parsed_meaning["image_url"].split("/").last.split("?").first
+
+      payload[:params][:note][:picture] = [
+        {
+          url: parsed_meaning["image_url"],
+          filename: filename,
+          fields: [ ANKI_FRONT_FIELD ]
         }
       ]
     end

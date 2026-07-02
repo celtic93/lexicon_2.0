@@ -107,13 +107,24 @@ class Meaning::Parser
         level = level_node&.text&.strip
       end
 
+      # 8. Картинка возле определения
+      def_block = def_tag.ancestors.find { |node| node["class"]&.include?("def-block") }
+      image_node = def_block&.at_css(".dimg amp-img") || sense_block&.at_css(".dimg amp-img")
+      image_url = nil
+
+      if image_node
+        relative_url = image_node["src"]
+        image_url = relative_url&.start_with?("/") ? "#{BASE_URL}#{relative_url}" : relative_url
+      end
+
       meanings_array << {
         text: word_text.downcase,
         meaning: meaning_text,
-        audio_url: audio_url,
-        examples: examples,
-        part_of_speech: part_of_speech,
-        level: level
+        audio_url:,
+        image_url:,
+        examples:,
+        part_of_speech:,
+        level:
       }
     end
   end
