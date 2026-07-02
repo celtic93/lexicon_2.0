@@ -75,7 +75,7 @@ class AnkiCard::Creator
     # examples of usage, the word is replaced by three dots
     parsed_meaning["examples"].each do |example|
       front_parts << "<br>"
-      front_parts << "<i>#{example.sub(parsed_meaning["text"], "...")}</i>"
+      front_parts << "<i>#{example.gsub(parsed_meaning["text"], "...")}</i>"
     end
 
     front_parts.join
