@@ -7,7 +7,7 @@
 <ul class="meanings-list">
     <% @word.meanings.each do |meaning| %>
         <li class="meanings-list__item">
-            <div class="meaning-card <%= meaning_card_status_class(meaning) %>">
+            <div class="meaning-card <%= meaning_card_status_class(meaning.status) %>">
                 <p class="meaning-card__text">
                     <%= meaning.text %>
                 </p>
@@ -16,19 +16,21 @@
                     Status: <strong><%= meaning.status %></strong>
                 </p>
 
-                <div class="meaning-card__actions">
-                    <%= button_to "Duplicate",
-                        meaning_path(meaning),
-                        method: :patch,
-                        params: { meaning: { status: "duplicate" } },
-                        class: "button button--secondary" %>
+                <% if status_actionable?(meaning.status) %>
+                    <div class="meaning-card__actions">
+                        <%= button_to "Duplicate",
+                            meaning_path(meaning),
+                            method: :patch,
+                            params: { meaning: { status: "duplicate" } },
+                            class: "button button--secondary" %>
 
-                    <%= button_to "Add to Anki",
-                        anki_cards_path,
-                        method: :post,
-                        params: { meaning_id: meaning.id },
-                        class: "button button--primary" %>
-                </div>
+                        <%= button_to "Add to Anki",
+                            anki_cards_path,
+                            method: :post,
+                            params: { meaning_id: meaning.id },
+                            class: "button button--primary" %>
+                    </div>
+                <% end %>
             </div>
         </li>
     <% end %>
