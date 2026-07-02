@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
+  resources :anki_cards, only: %i[ create ]
   resources :meanings, only: %i[ update ]
   resources :words, only: %i[ index new show create ]
 end

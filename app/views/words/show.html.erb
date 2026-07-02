@@ -24,8 +24,9 @@
                         class: "button button--secondary" %>
 
                     <%= button_to "Add to Anki",
-                        words_path,
+                        anki_cards_path,
                         method: :post,
+                        params: { meaning_id: meaning.id },
                         class: "button button--primary" %>
                 </div>
             </div>

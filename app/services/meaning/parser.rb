@@ -74,10 +74,7 @@ class Meaning::Parser
       # 5. Примеры
       examples = sense_block ? sense_block.css(".examp").map { |ex| ex.text.strip.gsub(/\s+/, " ") } : []
 
-      # 6. Перевод
-      translation = sense_block&.at_css(".trans")&.text&.strip
-
-      # 7. Извлекаем Слово или Фразу (Headword/Phrase)
+      # 6. Извлекаем Слово или Фразу (Headword/Phrase)
       word_text = nil
 
       # Сначала ищем специфическую фразу внутри текущего блока определения (.dsense)
@@ -97,7 +94,7 @@ class Meaning::Parser
         end
       end
 
-      # 8. Уровень слова (Level)
+      # 7. Уровень слова (Level)
       level = nil
       level_node = sense_block&.at_css(".epp-xref") || sense_block&.at_css(".dxref")
 
@@ -113,7 +110,6 @@ class Meaning::Parser
       meanings_array << {
         text: word_text.downcase,
         meaning: meaning_text,
-        translation: translation,
         audio_url: audio_url,
         examples: examples,
         part_of_speech: part_of_speech,
